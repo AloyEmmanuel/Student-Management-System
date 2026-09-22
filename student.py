@@ -1,10 +1,42 @@
 # Student Result Management System
 
-# Creating a boolean to keep the while loop running
-while True:
-    # Collecting the student name
+# importing my function
+import functions
 
-    student_name = input("What is your name? \n").capitalize().strip()
+# importing json
+import json
+
+# Importing path
+from pathlib import Path
+
+# building a path
+STUDENT_DB = Path(__file__).parent / "students.json"
+
+# list to store students
+students = []
+
+# students should load with existing data, else, start with an empty list
+try:
+    with open(STUDENT_DB, "r") as file:
+        students = json.load(file)
+except FileNotFoundError:
+    students = []
+
+# Creating a loop to hold the whole program
+while True:
+
+    while True:
+        # Collecting the student name,
+        student_name = input("What is your name? \n").capitalize().strip()
+
+        # checks if the number has a digit on it
+        has_number = any(char.isdigit() for char in student_name)
+
+        # Tells the student to enter a valid if the name has a digit, else it continues.
+        if has_number == True:
+            print("Enter a valid input")
+        else:
+            break
 
     # Validating the score input
     validation = True
@@ -41,26 +73,45 @@ while True:
                 except ValueError:
                     print("Enter a valid score")
 
-            # Getting the total score by adding scores
-            total_score = (math_score + english_score) / 2
-
-            # Grading them according to the score
-            def grading_system(score):
-                if score <= 39:
-                    return "F"
-                elif score >= 40 and score < 45:
-                    return "E"
-                elif score >= 45 and score < 50:
-                    return "D"
-                elif score >= 50 and score < 60:
-                    return "C"
-                elif score >= 60 and score < 70:
-                    return "B"
-                else:
-                    return "A"
+            # Getting the average score by adding both scores and dividing by 2
+            average_score = (math_score + english_score) / 2
 
             # Printing the result to the student
-            print(f"{student_name} your grade is: {grading_system(total_score)}")
-            another_student = input("Do you want to continue? ").lower()
-            if another_student == "no":
-                break
+            print(
+                f"{student_name} your grade is: {functions.grading_system(average_score)}"
+            )
+
+            break
+        break
+
+    # Appending the each student data in a dict format inside the list
+    students.append(
+        {
+            "name": student_name,
+            "math_score": math_score,
+            "english_score": english_score,
+        }
+    )
+
+    # writing to the students into a json file to store students data
+    with open(STUDENT_DB, "w") as file:
+        json.dump(students, file, indent=4)
+
+    # Asking if there more student
+    while True:
+        another_student = input("Is there another student? (yes/no) ").lower().strip()
+
+        # Ends the inner loop, and the outer loop start again for another student
+        if another_student == "yes":
+            break
+        # Ends the inner loop, and the outer loop ends the whole program
+        elif another_student == "no":
+            break
+        else:
+            print("Please enter yes or no.")
+
+    # Ends the program if the student enters no
+    if another_student == "no":
+        break
+    
+

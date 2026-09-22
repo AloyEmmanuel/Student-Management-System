@@ -2,7 +2,7 @@
 
 **The Issue**
 
-1. I intended `break` to affect the outer loop, but it terminates the nearest loop instead. I forgot that `break` terminates the nearest loop.
+1. I mistakenly placed `break` inside the `try`/`except` block instead of the loop I intended to control. Since `break` exits the nearest loop, it stopped the validation loop rather than the intended outer loop.
 
 ```python
 while True:
