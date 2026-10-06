@@ -24,12 +24,15 @@ except FileNotFoundError:
 
 print("What do you want to do?\nDo you want to:")
 print("Add a Student")
-print("Delete a student")
-user_choice = input("Enter your preferred? \n").capitalize().strip().replace(' ', '')
+print("Remove a student")
 
-if user_choice in ('Addstudent', 'Addastudent'):
+# Stores the action the user wants to perform, and formats it to be used in the if statement.
+user_input = input("Enter your preferred? \n").capitalize().strip().replace(" ", "")
+
+if user_input in ("Addstudent", "Addastudent"):
     # Creating a loop to hold the whole program
     while True:
+
         while True:
             # Collecting the student name,
             student_name = input("What is your name? \n").capitalize().strip()
@@ -45,49 +48,45 @@ if user_choice in ('Addstudent', 'Addastudent'):
 
         # Validating the score input
         validation = True
-        while True:
-            while validation is True:
-                try:
-                    # Collecting the student score
-                    math_score = int(input("Enter Your Math Score: \n"))
 
-                    # Validating the score to be between 1 - 100
-                    if math_score < 1 or math_score > 100:
-                        print("Score should be between range of 1 - 100")
+        while validation is True:
+            try:
+                # Collecting the student score
+                math_score = int(input("Enter Your Math Score: \n"))
 
-                    # If the score is valid, the loop ends
-                    else:
-                        validation = False
-                except ValueError:
-                    print("Enter a valid score.")
+                # Validating the score to be between 1 - 100
+                if math_score < 1 or math_score > 100:
+                    print("Score should be between range of 1 - 100")
 
-            validation2 = True
-            while True:
-                while validation2 is True:
-                    try:
-                        # Collecting the student english score
-                        english_score = int(input("Enter Your English Score: \n"))
+                # If the score is valid, the loop ends
+                else:
+                    validation = False
+            except ValueError:
+                print("Enter a valid score.")
 
-                        # Validating the score to be between 1 - 100
-                        if english_score < 1 or english_score > 100:
-                            print("Score should be between range of 1 - 100")
+        validation2 = True
+        while validation2 is True:
+            try:
+                # Collecting the student english score
+                english_score = int(input("Enter Your English Score: \n"))
 
-                        # If the score is valid, the loop ends
-                        else:
-                            validation2 = False
-                    except ValueError:
-                        print("Enter a valid score")
+                # Validating the score to be between 1 - 100
+                if english_score < 1 or english_score > 100:
+                    print("Score should be between range of 1 - 100")
 
-                # Getting the average score by adding both scores and dividing by 2
-                average_score = (math_score + english_score) / 2
+                # If the score is valid, the loop ends
+                else:
+                    validation2 = False
+            except ValueError:
+                print("Enter a valid score")
 
-                # Printing the result to the student
-                print(
-                    f"{student_name} your grade is: {functions.grading_system(average_score)}"
-                )
+            # Getting the average score by adding both scores and dividing by 2
+        average_score = (math_score + english_score) / 2
 
-                break
-            break
+        # Printing the result to the student
+        print(
+            f"{student_name} your grade is: {functions.grading_system(average_score)}"
+        )
 
         # Appending the each student data in a dict format inside the list
         students.append(
@@ -104,7 +103,9 @@ if user_choice in ('Addstudent', 'Addastudent'):
 
         # Asking if there more student
         while True:
-            another_student = input("Is there another student? (yes/no) ").lower().strip()
+            another_student = (
+                input("Is there another student? (yes/no) ").lower().strip()
+            )
 
             # Ends the inner loop, and the outer loop start again for another student
             if another_student == "yes":
@@ -119,8 +120,16 @@ if user_choice in ('Addstudent', 'Addastudent'):
         if another_student == "no":
             break
 
-elif user_choice in ('Removestudent', 'Removeastudent'):
-    student_remove = input("Enter the name of the student you want to remove: \n").capitalize().strip()
-    print(functions.delete_student(student_remove))
+# this elif block deletes a student by calling the delete_student function.
+elif user_input in ("Removestudent", "Removeastudent"):
+    student_name2 = (
+        input("Enter the name of the student you want to remove: \n")
+        .capitalize()
+        .strip()
+        .replace(" ", "")
+    )
+    print(functions.delete_student(student_name2))
+
+# this else block runs if the user enters an invalid input.
 else:
     print("Invalid input. Please enter a valid option.")
